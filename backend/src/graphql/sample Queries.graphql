@@ -1,0 +1,48 @@
+query AllCountries{
+  countries{
+    id,
+    name,
+    continent{
+      name
+    }
+    languages{
+      name
+    }
+  }
+}
+
+
+
+
+query getContinents{
+  continents{name,code
+  countries{name}
+ 
+  }
+}
+
+
+query getContinent{
+  continent(code:"AF"){code,name,id}
+}
+
+query getCountries{
+  countries{name,code,
+  continent{id,name}
+    languages{id,name}
+  }
+}
+
+query getCountry{
+  country(code:"TR"){id,name,code, continent{name},languages{id,name}}
+}
+
+query getLanguages{
+  languages{name,code, countries{name}}
+}
+
+query getLanguage{
+  language(code:"TR"){
+    id,name,code, countries{name}
+  }
+}

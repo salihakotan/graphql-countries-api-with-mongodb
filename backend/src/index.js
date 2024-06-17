@@ -31,22 +31,76 @@ const typeDefs = gql`
 
 
   type Continent {
+    id:ID!
     name: String!
+    code:String!
+    countries:[Country]
+
   }
   type Country {
+    id:ID!
     name: String!
+    code:String!
+    languages:[Language]
+    continent:Continent
+    continent_code:String,    
   }
   type Language {
+    id:ID!
     name: String!
+    code:String!
+    countries:[Country]
+    continent:Continent
+    continent_code:String
   }
 `;
 
 const resolvers = {
+
+        Continent:{
+            countries: async(parent,args,{db})=> {
+                const countries = await db.Country.find().then(countries=> countries.filter((country) => country.continent_code === parent.code))
+                return countries
+            },
+        },
+
+        Country:{
+
+            languages: async(parent,args, {db})=> {
+                const lang = await db.Language.find().then(langs=> langs.filter((lang) => lang.code === parent.code))
+                console.log("finded")
+                return lang
+            },
+        
+
+            continent: async(parent,args, {db})=> {
+                const continentObj = await db.Continent.find().then(continents=> continents.find((continent) => continent.code === parent.continent_code))
+                console.log("finded")
+                return continentObj
+            }
+        },
+
+
+            Language: {
+                countries: async(parent,args, {db})=> {
+                    const countryObj = await db.Country.find().then(countries=> countries.filter((country) => country.code === parent.code))
+                    console.log("finded")
+                    return countryObj
+                },
+                continent: async(parent,args, {db})=> {
+                    const continentObj = await db.Continent.find().then(continents=> continents.filter((continent) => continent.code === parent.continent_code))
+                    console.log("finded")
+                    return continentObj
+                }
+            },
+        
+    
+
   Query: {
 
     continent: async(parent,args,{db}) => {
-        const continent = await db.Continent.find((continent)=> continent.code === args.code)
-        console.log("continent finded: ", continent)
+        const continent = await db.Continent.find().then(continents=>continents.find((continent)=> continent.code === args.code))
+        console.log("continent finded: ")
         return continent
     },
 
@@ -56,7 +110,7 @@ const resolvers = {
     },
     
     country: async(parent,args,{db})=> {
-        const country = await db.Country.find((country)=> country.code === args.code)
+        const country =  await db.Country.find().then(countries=>countries.find((country)=> country.code === args.code))
         return country
     },
 
@@ -66,7 +120,7 @@ const resolvers = {
     },
 
     language: async(parent,args,{db})=> {
-        const language = await db.Language.find((language)=> language.code === args.code)
+        const language = await db.Language.find().then(languages=>languages.find((language)=> language.code === args.code))
         return language
     },
 

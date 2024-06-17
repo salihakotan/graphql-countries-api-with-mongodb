@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm start app.js",
-    "dev": "nodemon ./src/app.js",
+    "start": "npm start index.js",
+    "dev": "nodemon --exec babel-node ./src/index.js",
     "build": "sucrase ./src -d ./dist --transforms"
   },
   "keywords": [],
@@ -13,5 +13,17 @@
   "description": "",
   "devDependencies": {
     "sucrase": "^3.35.0"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.10.4",
+    "@babel/cli": "^7.24.7",
+    "@babel/core": "^7.24.7",
+    "@babel/node": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "apollo-server-core": "^3.13.0",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.8.2",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1"
   }
 }
